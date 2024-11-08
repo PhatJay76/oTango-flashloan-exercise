@@ -27,13 +27,11 @@ contract FlashLoan is Ownable {
     bytes32 private constant WSTETH_USDC_POOL = 0x178e029173417b1f9c8bc16dcec6f697bc323746000200000000000000000158;
     // wstETH-TANGO Balancer pool
     bytes32 private constant WSTETH_TANGO_POOL = 0x1ed1e6fa76e3dd9ea68d1fd8c4b8626ea5648dfa0002000000000000000005cb;
-    // 1% Slippage 
-    uint256 private constant SLIPPAGE_BIPS = 100; 
 
     constructor() Ownable(msg.sender) {}
     
     /**
-     * @notice Executes a swap using Balancer Batch Swap with slippage protection
+     * @notice Executes a swap using Balancer Batch Swap
      * @param amountIn structure of swap parameters
      */
     function _swapToken(uint256 amountIn) internal {
@@ -75,7 +73,7 @@ contract FlashLoan is Ownable {
         IVault.FundManagement memory funds = IVault.FundManagement({
             sender: address(this),
             fromInternalBalance: false,
-            recipient: payable(msg.sender),
+            recipient: payable(address(this)),
             toInternalBalance: false
         });
 
